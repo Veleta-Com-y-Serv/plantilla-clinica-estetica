@@ -1,0 +1,57 @@
+---
+// Promociones: banda de oro a todo el ancho (color primario pleno). Cada oferta es una columna separada por
+// filetes: validez en mayúsculas, título en serif, texto y el precio grande abajo (si está vacío no se pinta).
+// Campos: `ofertas[]` (titulo, texto, precio, validez), `nota`, `cta`. Con `ofertas: []` la sección no se pinta.
+import { seccion, valor } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const ofertas = s ? s.ofertas.filter((o) => o && valor(o.titulo)) : [];
+const nota = valor(s?.nota);
+const cols = Math.min(ofertas.length, 3);
+---
+
+{
+  s && ofertas.length > 0 && (
+    <Seccion id={Astro.props.id} class="banda--oro ofertas">
+      <Titular alinear="partido" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      <ul class="ofertas-rejilla" style={`--cols:${cols}`}>
+        {ofertas.map((o) => {
+          const precio = valor(o.precio);
+          const validez = valor(o.validez);
+          return (
+            <li>
+              {validez && <p class="oferta-validez">{validez}</p>}
+              <h3 class="oferta-titulo">{o.titulo}</h3>
+              {o.texto && <p class="mt-3 opacity-85">{o.texto}</p>}
+              {precio && <p class="oferta-precio">{precio}</p>}
+            </li>
+          );
+        })}
+      </ul>
+      {(nota || s.cta?.url) && (
+        <div class="ofertas-cierre">
+          {nota && <p class="text-sm opacity-80">{nota}</p>}
+          {s.cta?.url && <a class="btn btn--oscuro" href={s.cta.url}>{s.cta.texto}</a>}
+        </div>
+      )}
+    </Seccion>
+  )
+}
+
+<style>
+  .ofertas :global(.titulo-seccion) { color: inherit; }
+  .ofertas :global(.titular--partido .titular-texto) { border-left-color: color-mix(in srgb, currentColor 35%, transparent); }
+  .ofertas-rejilla { display: grid; border-top: 1px solid color-mix(in srgb, currentColor 35%, transparent); }
+  .ofertas-rejilla li { display: flex; flex-direction: column; padding-block: 2.25rem; border-bottom: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+  .oferta-validez { font-size: .68rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; opacity: .85; }
+  .oferta-titulo { margin-top: .9rem; font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.4rem); line-height: 1.08; }
+  .oferta-precio { margin-top: auto; padding-top: 1.75rem; font-family: var(--fuente-titulos); font-size: clamp(2.4rem, 2rem + 1.6vw, 3.4rem); line-height: 1; }
+  .ofertas-cierre { margin-top: 3rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  @media (min-width: 900px) {
+    .ofertas-rejilla { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); border-bottom: 1px solid color-mix(in srgb, currentColor 35%, transparent); }
+    .ofertas-rejilla li { padding: 2.75rem 2.5rem 3rem; border-bottom: 0; border-left: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+    .ofertas-rejilla li:nth-child(3n+1) { border-left: 0; padding-left: 0; }
+  }
+</style>

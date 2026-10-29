@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base titulo="Página no encontrada">
+  <section class="banda--perla pagina-error">
+    <div class="contenedor grid min-h-[70svh] content-center py-20 md:py-28">
+      <p class="antetitulo">Error 404</p>
+      <h1 class="mt-6 max-w-[14ch] text-[clamp(2.75rem,1.4rem+5.6vw,6.5rem)] font-light leading-[.98]">Esta página no existe</h1>
+      <p class="mt-6 max-w-md opacity-75">Puede que el enlace esté mal o que la página se haya movido.</p>
+      <p class="mt-10"><a class="btn" href="/">Volver al inicio</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .pagina-error { background: radial-gradient(circle at 85% 30%, transparent 0 11rem, var(--linea-oro) 11rem calc(11rem + 1px), transparent calc(11rem + 1px)), radial-gradient(60rem 36rem at 100% 0%, var(--perla-honda), transparent 70%), var(--perla); }
+</style>

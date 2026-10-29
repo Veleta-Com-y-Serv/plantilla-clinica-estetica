@@ -1,0 +1,49 @@
+---
+// Opiniones: banda perla. La primera opinión va como cita enorme en serif cursiva, centrada y con comillas de oro;
+// el resto, en columnas bajo un filete. Campos: `testimonios[]` (texto, autor), `nota` opcional.
+// Sin testimonios, la sección no se pinta.
+import { seccion, valor } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const testimonios = s ? s.testimonios.filter((t) => t && valor(t.texto)) : [];
+const [principal, ...resto] = testimonios;
+const nota = valor(s?.nota);
+---
+
+{
+  s && principal && (
+    <Seccion id={Astro.props.id} class="banda--perla">
+      <Titular alinear="centro" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} class="opi-titular" />
+      <figure class="opi-principal">
+        <span class="opi-comilla" aria-hidden="true">“</span>
+        <blockquote class="opi-cita">{principal.texto}</blockquote>
+        {principal.autor && <figcaption class="opi-autor">{principal.autor}</figcaption>}
+      </figure>
+      {resto.length > 0 && (
+        <ul class="opi-resto" style={`--cols:${Math.min(resto.length, 3)}`}>
+          {resto.map((t) => (
+            <li>
+              <blockquote class="serif text-[1.3rem] leading-snug">«{t.texto}»</blockquote>
+              {t.autor && <p class="opi-autor mt-5">{t.autor}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
+      {nota && <p class="mt-12 text-center text-sm opacity-65">{nota}</p>}
+    </Seccion>
+  )
+}
+
+<style>
+  .opi-principal { max-width: 62rem; margin-inline: auto; text-align: center; }
+  .opi-comilla { display: block; height: 3.5rem; font-family: var(--fuente-titulos); font-size: 7rem; line-height: 1; color: var(--c-primario); }
+  .opi-cita { font-family: var(--fuente-titulos); font-style: italic; font-weight: 300; font-size: clamp(1.7rem, 1.1rem + 2.4vw, 3.3rem); line-height: 1.18; }
+  .opi-autor { margin-top: 2rem; color: var(--oro-texto); font-size: .7rem; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; }
+  .opi-resto { margin-top: 4.5rem; display: grid; gap: 2.5rem; border-top: 1px solid var(--linea-oro); padding-top: 3rem; }
+  @media (min-width: 768px) {
+    .opi-resto { grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); gap: 3.5rem; }
+    .opi-resto li + li { border-left: 1px solid var(--linea); padding-left: 3.5rem; }
+  }
+</style>

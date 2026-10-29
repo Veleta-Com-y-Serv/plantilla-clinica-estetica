@@ -1,0 +1,62 @@
+---
+// Apartado de texto genérico (site.yaml: `tipo: texto`): con `imagen`, banda partida 50/50 con la foto a sangre
+// a la derecha; sin imagen, banda perla con el texto centrado y el título grande. Campos: `antetitulo`,
+// `titulo`, `texto` (párrafos separados por una línea en blanco), `imagen`, `items` (icono, titulo, texto), `cta`.
+import { seccion, parrafos } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const items = s ? s.items.filter((it) => it && it.titulo) : [];
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class:list={[s.imagen ? 'banda--clara' : 'banda--perla']}>
+      <div class:list={['texto-rejilla', { 'texto-rejilla--foto': s.imagen }]}>
+        <div class:list={s.imagen ? ['mitad-texto', 'mitad-texto--izq'] : ['contenedor', 'seccion', 'text-center']}>
+          <div class:list={[!s.imagen && 'mx-auto max-w-4xl']}>
+            {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+            {s.titulo && <h2 class="titulo-seccion">{s.titulo}</h2>}
+            <div class:list={['mt-7 space-y-4 opacity-80', !s.imagen && 'mx-auto max-w-2xl text-lg']}>
+              {parrafos(s.texto).map((p) => <p>{p}</p>)}
+            </div>
+            {items.length > 0 && (
+              <ul class:list={['texto-items', !s.imagen && 'mx-auto max-w-2xl text-left']}>
+                {items.map((it) => (
+                  <li>
+                    <span class="texto-icono"><Icono nombre={it.icono} tam={18} /></span>
+                    <span>
+                      <span class="block font-semibold">{it.titulo}</span>
+                      {it.texto && <span class="mt-1 block text-sm opacity-75">{it.texto}</span>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {s.cta?.url && <a class="btn mt-10" href={s.cta.url}>{s.cta.texto}</a>}
+          </div>
+        </div>
+        {s.imagen && (
+          <div class="texto-foto marco">
+            <Imagen src={s.imagen} alt={altSeccion(s)} ancho={1200} alto={1500} class="h-full w-full object-cover" />
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .texto-rejilla { display: grid; }
+  .texto-foto { aspect-ratio: 4 / 3; background: var(--perla); }
+  .texto-items { margin-top: 2.5rem; border-top: 1px solid var(--linea-oro); }
+  .texto-items li { display: flex; gap: 1rem; align-items: flex-start; padding-block: 1.1rem; border-bottom: 1px solid var(--linea); }
+  .texto-icono { color: var(--oro-texto); margin-top: .15rem; flex-shrink: 0; }
+  @media (min-width: 1024px) {
+    .texto-rejilla--foto { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 80svh; }
+    .texto-foto { aspect-ratio: auto; min-height: 100%; }
+    .texto-foto :global(img) { position: absolute; inset: 0; }
+  }
+</style>

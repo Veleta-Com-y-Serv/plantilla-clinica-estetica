@@ -1,0 +1,42 @@
+---
+// Equipo: banda clara con retratos verticales con marco fino (las fotos de personas usan la silueta
+// /placeholders/persona.svg), nombre en serif y cargo en oro, en 1 → 2 → 4 columnas a todo el ancho.
+// Campos: `personas[]` (nombre, cargo, foto, texto). Sin personas, la sección no se pinta.
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const personas = s ? s.personas.filter((p) => p && p.nombre) : [];
+const cols = Math.min(Math.max(personas.length, 2), 4);
+---
+
+{
+  s && personas.length > 0 && (
+    <Seccion id={Astro.props.id} class="banda--clara">
+      <Titular alinear="partido" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+      <ul class="equipo-rejilla" style={`--cols:${cols}`}>
+        {personas.map((p) => (
+          <li>
+            <div class="equipo-foto marco">
+              <Imagen src={p.foto || '/placeholders/persona.svg'} alt={p.nombre} ancho={600} alto={800} class="h-full w-full object-cover" />
+            </div>
+            <p class="equipo-nombre">{p.nombre}</p>
+            {p.cargo && <p class="equipo-cargo">{p.cargo}</p>}
+            {p.texto && <p class="mt-3 text-[.95rem] opacity-75">{p.texto}</p>}
+          </li>
+        ))}
+      </ul>
+    </Seccion>
+  )
+}
+
+<style>
+  .equipo-rejilla { display: grid; gap: 3rem 1.25rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .equipo-foto { aspect-ratio: 3 / 4; background: var(--perla); }
+  .equipo-nombre { margin-top: 1.25rem; font-family: var(--fuente-titulos); font-size: clamp(1.3rem, 1.1rem + .8vw, 1.85rem); line-height: 1.15; }
+  .equipo-cargo { margin-top: .45rem; color: var(--oro-texto); font-size: .66rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }
+  @media (max-width: 479px) { .equipo-rejilla li p.mt-3 { font-size: .88rem; } }
+  @media (min-width: 1024px) { .equipo-rejilla { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 4rem 2.5rem; } }
+</style>

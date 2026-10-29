@@ -1,0 +1,50 @@
+---
+// Preguntas frecuentes (diseño extra para apartados nuevos: `tipo: preguntas`): banda clara partida; a la
+// izquierda el titular (fijo al hacer scroll en escritorio), a la derecha un acordeón nativo <details> con
+// filetes y un signo «+» de oro, sin JavaScript. Campos: `preguntas[]` (pregunta, respuesta), `cta` opcional.
+import { seccion } from '../../data/site';
+import Seccion from '../ui/Seccion.astro';
+import Titular from '../ui/Titular.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const preguntas = s ? s.preguntas.filter((p) => p && p.pregunta) : [];
+---
+
+{
+  s && preguntas.length > 0 && (
+    <Seccion id={Astro.props.id} class="banda--clara">
+      <div class="faq-rejilla">
+        <div class="faq-lado">
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+          {s.cta?.url && <a class="btn-sec mt-8" href={s.cta.url}>{s.cta.texto}</a>}
+        </div>
+        <div class="faq-lista">
+          {preguntas.map((p) => (
+            <details class="faq">
+              <summary class="faq-pregunta">
+                <span>{p.pregunta}</span>
+                <span class="faq-signo" aria-hidden="true">+</span>
+              </summary>
+              <p class="faq-respuesta">{p.respuesta}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </Seccion>
+  )
+}
+
+<style>
+  .faq-rejilla { display: grid; gap: 3rem; }
+  .faq-lado :global(.titular) { margin-bottom: 0; }
+  .faq-lista { border-top: 1px solid var(--linea-oro); }
+  .faq { border-bottom: 1px solid var(--linea); }
+  .faq-pregunta { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; min-height: 3.5rem; padding-block: 1.4rem; font-family: var(--fuente-titulos); font-size: clamp(1.25rem, 1.1rem + .6vw, 1.6rem); line-height: 1.25; }
+  .faq-pregunta:hover { color: var(--oro-texto); }
+  .faq-signo { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; flex-shrink: 0; border: 1px solid var(--linea-oro); color: var(--oro-texto); font-family: var(--fuente-texto); font-size: 1.2rem; transition: transform .2s ease; }
+  .faq-respuesta { padding-bottom: 1.75rem; padding-right: 3rem; opacity: .78; max-width: 46rem; }
+  @media (min-width: 1024px) {
+    .faq-rejilla { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 6rem; }
+    .faq-lado { position: sticky; top: 8rem; align-self: start; }
+  }
+</style>

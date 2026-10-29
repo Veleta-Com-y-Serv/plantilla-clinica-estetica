@@ -1,0 +1,77 @@
+---
+// Contacto: banda partida 50/50 a todo el ancho. A la izquierda (clara) el titular, los datos en filas con
+// filetes e iconos de oro y el plano (`imagen`, enlaza a mapas); a la derecha, a sangre hasta el borde, un panel
+// perla con el formulario (mailto). Campos: `antetitulo`, `titulo`, `texto`, `imagen`, `boton`.
+import { seccion, site, tel, mapa, whatsapp, valor } from '../../data/site';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+import FormularioContacto from '../ui/FormularioContacto.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const c = site.contacto;
+const datos = [
+  c.direccion && { icono: 'mapa', etiqueta: 'Dirección', valor: c.direccion, url: mapa(c.direccion), externo: true },
+  c.telefono && { icono: 'telefono', etiqueta: 'Teléfono', valor: c.telefono, url: tel(c.telefono), externo: false },
+  c.whatsapp && { icono: 'whatsapp', etiqueta: 'WhatsApp', valor: c.whatsapp, url: whatsapp(c.whatsapp), externo: true },
+  c.email && { icono: 'correo', etiqueta: 'Correo', valor: c.email, url: `mailto:${c.email}`, externo: false },
+  c.horario && { icono: 'reloj', etiqueta: 'Horario', valor: c.horario, url: '', externo: false },
+].filter(Boolean) as { icono: string; etiqueta: string; valor: string; url: string; externo: boolean }[];
+const boton = valor(s?.boton) || undefined;
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class="banda--clara">
+      <div class="contacto-rejilla">
+        <div class="mitad-texto mitad-texto--izq">
+          <Titular antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+          {datos.length > 0 && (
+            <ul class="contacto-datos">
+              {datos.map((d) => (
+                <li>
+                  <span class="contacto-icono"><Icono nombre={d.icono} tam={18} /></span>
+                  <span class="min-w-0">
+                    <span class="contacto-etiqueta">{d.etiqueta}</span>
+                    {d.url ? (
+                      <a href={d.url} rel={d.externo ? 'noopener' : undefined} target={d.externo ? '_blank' : undefined} class="break-words hover:text-[var(--oro-texto)]">{d.valor}</a>
+                    ) : (
+                      <span class="block">{d.valor}</span>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {s.imagen && (
+            <a href={mapa(c.direccion) || undefined} rel="noopener" target="_blank" class="contacto-mapa marco" aria-label={c.direccion ? `Ver ${c.direccion} en el mapa` : site.nombre}>
+              <Imagen src={s.imagen} alt="" ancho={1000} alto={625} class="h-full w-full object-cover" />
+            </a>
+          )}
+        </div>
+        <div class="contacto-panel banda--perla">
+          <div class="contacto-form">
+            <FormularioContacto boton={boton} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .contacto-rejilla { display: grid; }
+  .contacto-datos { border-top: 1px solid var(--linea-oro); }
+  .contacto-datos li { display: flex; gap: 1rem; align-items: flex-start; padding-block: 1.1rem; border-bottom: 1px solid var(--linea); }
+  .contacto-icono { color: var(--oro-texto); margin-top: .2rem; flex-shrink: 0; }
+  .contacto-etiqueta { display: block; font-size: .64rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; opacity: .6; margin-bottom: .15rem; }
+  .contacto-mapa { display: block; margin-top: 2.5rem; aspect-ratio: 16 / 10; background: var(--perla); }
+  .contacto-panel { padding: 3.5rem 1rem 4.5rem; }
+  .contacto-form { max-width: 36rem; }
+  @media (min-width: 768px) { .contacto-panel { padding: 5rem 2rem; } }
+  @media (min-width: 1024px) {
+    .contacto-rejilla { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .contacto-panel { display: flex; align-items: center; padding: 8rem clamp(3rem, 6vw, 7rem); }
+    .contacto-form { width: 100%; }
+  }
+</style>

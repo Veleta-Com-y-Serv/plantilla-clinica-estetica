@@ -1,0 +1,86 @@
+---
+// Pedir cita: foto a sangre (`imagen`) con un velo claro casi opaco y, centrados encima, titular, tres pasos
+// (`items`: titulo, texto) con numerales romanos de oro y los botones: `cta` (si su `url` está vacía abre el
+// WhatsApp de contacto), `enlace_reservas` (agenda externa opcional, con `enlace_reservas_texto`) y el teléfono.
+// Debajo, `nota` y el horario. Sin foto, banda perla.
+import { seccion, site, tel, whatsapp, valor } from '../../data/site';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const c = site.contacto;
+const urlCta = valor(s?.cta?.url) || whatsapp(c.whatsapp);
+const esWhatsapp = /wa\.me|whatsapp/i.test(urlCta);
+const agenda = valor(s?.enlace_reservas);
+const agendaTexto = valor(s?.enlace_reservas_texto) || agenda.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+const nota = valor(s?.nota);
+const externo = (u: string) => /^https?:/.test(u);
+const pasos = s ? s.items.filter((it) => it && it.titulo) : [];
+const ROMANOS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+---
+
+{
+  s && (
+    <section id={Astro.props.id} class="cita-banda">
+      {s.imagen && <Imagen src={s.imagen} alt="" ancho={1920} alto={1080} class="cita-foto" />}
+      <div class="cita-velo" aria-hidden="true" />
+      <div class="contenedor cita-cuerpo">
+        <Titular alinear="centro" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {pasos.length > 0 && (
+          <ol class="cita-pasos" style={`--cols:${Math.min(pasos.length, 4)}`}>
+            {pasos.map((it, i) => (
+              <li>
+                <span class="cita-num" aria-hidden="true">{ROMANOS[i] ?? i + 1}</span>
+                <p class="cita-paso">{it.titulo}</p>
+                {it.texto && <p class="mt-2 text-[.95rem] opacity-75">{it.texto}</p>}
+              </li>
+            ))}
+          </ol>
+        )}
+        <div class="mt-12 flex flex-wrap justify-center gap-3">
+          {urlCta && s.cta?.texto && (
+            <a class="btn" href={urlCta} rel={externo(urlCta) ? 'noopener' : undefined} target={externo(urlCta) ? '_blank' : undefined}>
+              {esWhatsapp && <Icono nombre="whatsapp" tam={18} />}
+              {s.cta.texto}
+            </a>
+          )}
+          {agenda && (
+            <a class="btn-sec" href={agenda} rel="noopener" target="_blank">
+              <Icono nombre="calendario" tam={18} />
+              {agendaTexto}
+            </a>
+          )}
+          {c.telefono && (
+            <a class="btn-sec" href={tel(c.telefono)}>
+              <Icono nombre="telefono" tam={18} />
+              {c.telefono}
+            </a>
+          )}
+        </div>
+        {(nota || c.horario) && (
+          <div class="mx-auto mt-8 max-w-xl text-center text-sm opacity-75">
+            {nota && <p>{nota}</p>}
+            {c.horario && <p class="mt-2 inline-flex items-center gap-2"><Icono nombre="reloj" tam={16} />{c.horario}</p>}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .cita-banda { position: relative; isolation: isolate; overflow: hidden; background: var(--perla); padding-block: var(--ritmo); }
+  .cita-banda :global(.cita-foto) { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+  .cita-velo { position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at center, color-mix(in srgb, var(--c-fondo) 92%, transparent) 0%, color-mix(in srgb, var(--c-fondo) 84%, transparent) 55%, color-mix(in srgb, var(--c-fondo) 70%, transparent) 100%); }
+  .cita-cuerpo { position: relative; }
+  .cita-pasos { display: grid; gap: 2rem; max-width: 72rem; margin-inline: auto; text-align: center; }
+  .cita-pasos li { padding-top: 2rem; border-top: 1px solid var(--linea-oro); }
+  .cita-num { display: block; font-family: var(--fuente-titulos); font-size: 2.6rem; line-height: 1; color: var(--oro-texto); }
+  .cita-paso { margin-top: 1rem; font-family: var(--fuente-titulos); font-size: 1.55rem; line-height: 1.15; }
+  @media (min-width: 768px) {
+    .cita-banda { padding-block: var(--ritmo-md); min-height: 80svh; display: flex; align-items: center; }
+    .cita-cuerpo { width: 100%; }
+    .cita-pasos { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 3rem; }
+  }
+</style>

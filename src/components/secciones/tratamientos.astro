@@ -1,0 +1,127 @@
+---
+// Tratamientos: rejilla a todo el ancho (1 → 2 → 3 → 4 columnas) sin tarjetas: foto vertical con marco fino,
+// categoría en oro, nombre en serif, texto y, sobre un filete, duración y precio (si están vacíos no se pintan).
+// Con más de una `categoria`, botones de filtro (un poco de JavaScript en línea; sin él se ven todos).
+// Campos: `tratamientos[]` (nombre, texto, precio, duracion, categoria, imagen), `nota`, `cta`.
+import { seccion, valor, slug } from '../../data/site';
+import { altFicha } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const { id } = Astro.props;
+const s = seccion(id);
+const lista = s ? s.tratamientos.filter((t) => t && valor(t.nombre)) : [];
+const categorias = [...new Set(lista.map((t) => valor(t.categoria)).filter(Boolean))];
+const nota = valor(s?.nota);
+---
+
+{
+  s && (lista.length > 0 || s.texto) && (
+    <section id={id} class="seccion banda--clara">
+      <div class="contenedor">
+        <Titular alinear="partido" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {categorias.length > 1 && (
+          <div class="filtro" role="group" aria-label="Filtrar por categoría" data-filtro={id} hidden>
+            <button type="button" aria-pressed="true" data-cat="">Todos</button>
+            {categorias.map((c) => (
+              <button type="button" aria-pressed="false" data-cat={slug(c)}>{c}</button>
+            ))}
+          </div>
+        )}
+        {lista.length > 0 && (
+          <ul class="trat-rejilla" data-lista={id}>
+            {lista.map((t) => {
+              const precio = valor(t.precio);
+              const duracion = valor(t.duracion);
+              const categoria = valor(t.categoria);
+              return (
+                <li class="trat" data-cat={categoria ? slug(categoria) : ''}>
+                  {t.imagen && (
+                    <div class="trat-foto marco">
+                      <Imagen src={t.imagen} alt={altFicha(t)} ancho={900} alto={1200} class="h-full w-full object-cover" />
+                    </div>
+                  )}
+                  {categoria && <p class="trat-cat">{categoria}</p>}
+                  <h3 class="trat-nombre">{t.nombre}</h3>
+                  {t.texto && <p class="trat-texto">{t.texto}</p>}
+                  {(duracion || precio) && (
+                    <p class="trat-pie">
+                      <span class="inline-flex items-center gap-2">
+                        {duracion && (
+                          <>
+                            <Icono nombre="reloj" tam={15} />
+                            {duracion}
+                          </>
+                        )}
+                      </span>
+                      {precio && <span class="trat-precio">{precio}</span>}
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {(nota || s.cta?.url) && (
+          <div class="trat-cierre">
+            {nota && <p class="text-sm opacity-70">{nota}</p>}
+            {s.cta?.url && <a class="btn" href={s.cta.url}>{s.cta.texto}</a>}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<script is:inline>
+  document.querySelectorAll('[data-filtro]').forEach(function (f) {
+    if (f.dataset.listo) return;
+    f.dataset.listo = '1';
+    f.hidden = false;
+    var lista = document.querySelector('[data-lista="' + f.dataset.filtro + '"]');
+    f.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b || !lista) return;
+      f.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      lista.querySelectorAll('[data-cat]').forEach(function (li) { li.hidden = !!b.dataset.cat && li.dataset.cat !== b.dataset.cat; });
+    });
+  });
+</script>
+
+<style>
+  .filtro { display: flex; flex-wrap: wrap; gap: .5rem; margin: -1.5rem 0 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--linea); }
+  .filtro[hidden] { display: none; }
+  .filtro button { min-height: 2.75rem; padding: .5rem 1.15rem; border: 1px solid var(--linea); background: transparent; color: inherit; font: inherit; font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; }
+  .filtro button:hover { border-color: var(--c-primario); }
+  .filtro button[aria-pressed='true'] { background: var(--grafito); border-color: var(--grafito); color: var(--sobre-grafito); }
+  .trat-rejilla { display: grid; gap: 3.5rem 2rem; }
+  .trat { display: flex; flex-direction: column; min-width: 0; }
+  .trat[hidden] { display: none; }
+  .trat-foto { aspect-ratio: 4 / 3; background: var(--perla); margin-bottom: 1.5rem; }
+  .trat-foto :global(img) { transition: transform .8s ease; }
+  .trat:hover .trat-foto :global(img) { transform: scale(1.04); }
+  .trat-cat { color: var(--oro-texto); font-size: .68rem; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; }
+  .trat-nombre { margin-top: .55rem; font-size: clamp(1.6rem, 1.3rem + 1vw, 2rem); line-height: 1.1; }
+  .trat-texto { margin-top: .75rem; opacity: .75; font-size: .97rem; }
+  .trat-texto { margin-bottom: 1.25rem; }
+  .trat-pie { margin-top: auto; padding-top: 1.1rem; border-top: 1px solid var(--linea-oro); display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; font-size: .88rem; }
+  .trat-nombre + .trat-pie { margin-top: 1.25rem; }
+  .trat-precio { font-family: var(--fuente-titulos); font-size: 1.45rem; color: var(--oro-texto); white-space: nowrap; }
+  .trat-cierre { margin-top: 4rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; padding-top: 2rem; border-top: 1px solid var(--linea); }
+  /* Móvil: ficha horizontal (foto estrecha a la izquierda, texto a la derecha) para no alargar la página */
+  @media (max-width: 639px) {
+    .trat-rejilla { gap: 0; border-top: 1px solid var(--linea); }
+    .trat { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: 1.1rem; align-content: start; padding-block: 1.5rem; border-bottom: 1px solid var(--linea); }
+    .trat > :not(.trat-foto) { grid-column: 2; }
+    .trat-foto { grid-column: 1; grid-row: 1 / span 5; align-self: start; aspect-ratio: 3 / 4; margin-bottom: 0; }
+    .trat-foto.marco::after { inset: .4rem; }
+    .trat-nombre { font-size: 1.45rem; margin-top: .35rem; }
+    .trat-texto { font-size: .92rem; margin-top: .4rem; margin-bottom: .9rem; }
+    .trat-pie { padding-top: .75rem; }
+    .trat-precio { font-size: 1.25rem; }
+  }
+  @media (min-width: 640px) { .trat-rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } .trat-foto { aspect-ratio: 3 / 4; } }
+  @media (min-width: 1024px) { .trat-rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4.5rem 2.5rem; } }
+  @media (min-width: 1280px) { .trat-rejilla { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+</style>

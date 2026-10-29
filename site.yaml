@@ -1,0 +1,161 @@
+# Contenido de la web. Es lo único que rellena la plataforma NoExpertise.
+# Las secciones se muestran en el orden de este fichero. Para ocultar una: activa: false.
+# Apartado nuevo: un id propio (es su ancla, /#id) con `tipo:` = el diseño de otra sección o `texto`.
+# Listas siempre planas: nunca una lista dentro de un elemento de lista. Precios siempre entre comillas.
+nombre: Nácar Clínica Estética
+eslogan: Medicina estética y láser en el centro de Marbella.
+sector: clinica-estetica
+logo: ""          # ruta a una imagen en public/ (p. ej. /logo.svg). Vacío = nombre en texto.
+colores:
+  primario: "#b8955c"   # oro champán (botones, filetes, banda de promociones)
+  acento: "#a7a29c"     # gris perla (bandas perla y detalles)
+  fondo: "#fcfbf9"      # blanco cálido
+  texto: "#2a282d"      # grafito (texto y bandas oscuras)
+contacto:
+  telefono: "952 81 47 26"
+  email: cita@nacarclinica.es
+  direccion: Avenida Ricardo Soriano 41, 29601 Marbella (Málaga)
+  horario: "Lunes a viernes, de 10:00 a 20:00. Sábados, de 10:00 a 14:00."
+  whatsapp: "+34 611 48 27 90"
+redes:
+  instagram: https://www.instagram.com/
+  facebook: ""
+  linkedin: ""
+menu:
+  - { texto: Tratamientos, url: "/#tratamientos" }
+  - { texto: La clínica, url: "/#sobre" }
+  - { texto: Tecnología, url: "/#tecnologia" }
+  - { texto: Equipo, url: "/#equipo" }
+  - { texto: Promociones, url: "/#ofertas" }
+  - { texto: Contacto, url: "/#contacto" }
+boton_cabecera: { texto: Pedir cita, url: "/#cita" }
+seo:
+  titulo: Nácar Clínica Estética · Medicina estética en Marbella
+  descripcion: "Medicina estética, láser y tratamientos faciales y corporales en Marbella, con equipo médico colegiado y primera valoración sin coste."
+  tipo: MedicalClinic   # tipo de schema.org (MedicalClinic, BeautySalon, DaySpa, Dentist…)
+marca_pie: true   # «Web creada con NoExpertise» en el pie
+
+secciones:
+  hero:
+    activa: true
+    antetitulo: Medicina estética en Marbella
+    titulo: Belleza serena, con criterio médico
+    texto: "Tratamientos faciales, láser y medicina estética pensados para ti. Resultados naturales, sin prisas y con seguimiento de tu médica."
+    imagen: /fotos/hero.jpg   # foto a sangre con velo claro
+    cta: { texto: Pedir valoración, url: "/#cita" }
+    cta_secundario: { texto: Ver tratamientos, url: "/#tratamientos" }
+    items:   # sellos en la franja inferior de la portada (solo `titulo`)
+      - { titulo: Equipo médico colegiado }
+      - { titulo: Primera valoración sin coste }
+      - { titulo: Abrimos los sábados }
+
+  tratamientos:
+    activa: true
+    antetitulo: Tratamientos
+    titulo: Cada piel pide su propio protocolo
+    texto: "Elige por categoría. Antes de cualquier tratamiento te hacemos una valoración médica y te explicamos qué esperar."
+    tratamientos:   # se filtran por `categoria` (en el orden en que aparece cada una)
+      - { nombre: Higiene facial médica, categoria: Facial, duracion: 60 min, precio: "85 €", imagen: /fotos/tratamiento-higiene.jpg, texto: "Limpieza profunda, extracción y mascarilla según tu tipo de piel." }
+      - { nombre: Peeling químico, categoria: Facial, duracion: 45 min, precio: "desde 120 €", imagen: /fotos/tratamiento-peeling.jpg, texto: "Renueva la textura y unifica el tono. Pauta de cuidados en casa incluida." }
+      - { nombre: Ácido hialurónico, categoria: Medicina estética, duracion: 30 min, precio: "desde 290 €", imagen: /fotos/tratamiento-hialuronico.jpg, texto: "Hidratación y volumen en labios, ojeras o surcos, siempre con resultado natural." }
+      - { nombre: Arrugas de expresión, categoria: Medicina estética, duracion: 20 min, precio: "desde 250 €", imagen: /fotos/tratamiento-toxina.jpg, texto: "Suaviza frente, entrecejo y patas de gallo sin perder la expresión." }
+      - { nombre: Bioestimulación facial, categoria: Medicina estética, duracion: 40 min, precio: "180 €", imagen: /fotos/tratamiento-mesoterapia.jpg, texto: "Vitaminas y activos que devuelven luz y firmeza a la piel cansada." }
+      - { nombre: Depilación láser de diodo, categoria: Láser, duracion: Según zona, precio: "desde 39 €", imagen: /fotos/tratamiento-laser.jpg, texto: "Apta para casi todos los tonos de piel y también en verano." }
+      - { nombre: Láser para manchas, categoria: Láser, duracion: 30 min, precio: "desde 150 €", imagen: /fotos/tratamiento-manchas.jpg, texto: "Atenúa manchas solares y de la edad en cara, escote y manos." }
+      - { nombre: Radiofrecuencia corporal, categoria: Corporal, duracion: 50 min, precio: "90 €", imagen: /fotos/tratamiento-corporal.jpg, texto: "Reafirma abdomen, brazos y piernas. Sin agujas y sin tiempo de recuperación." }
+    nota: "Precios orientativos con IVA. El precio final depende de la valoración médica."
+    cta: { texto: Pedir mi valoración, url: "/#cita" }
+
+  sobre:
+    activa: true
+    antetitulo: La clínica
+    titulo: Un espacio tranquilo para cuidarte
+    declaracion: "La medicina estética que nos gusta no se nota: solo se nota que estás bien."
+    texto: "Nácar nació en el centro de Marbella con una idea sencilla: tratamientos médicos explicados con calma, sin presiones y con el mismo cuidado que pondríamos en nuestra familia.\n\nTrabajamos con citas espaciadas, cabinas privadas y un plan por escrito para cada paciente."
+    imagen: /fotos/clinica.jpg   # foto vertical a sangre (mitad de la banda)
+    items:
+      - { titulo: Valoración médica previa, texto: "Siempre antes de empezar, y sin compromiso.", icono: escudo }
+      - { titulo: Protocolos a medida, texto: "Nada de paquetes cerrados: lo que tu piel necesita.", icono: hoja }
+      - { titulo: Cabinas privadas, texto: "Sin esperas compartidas y con total discreción.", icono: casa }
+      - { titulo: Seguimiento cercano, texto: "Revisión incluida tras cada tratamiento.", icono: calendario }
+    cta: { texto: Conoce al equipo, url: "/#equipo" }
+
+  tecnologia:
+    activa: true
+    antetitulo: Tecnología
+    titulo: Equipos certificados, manos expertas
+    texto: "La tecnología ayuda; el criterio lo pone el equipo médico. Todos nuestros equipos tienen marcado sanitario y revisión periódica."
+    imagen: /fotos/tecnologia.jpg   # franja panorámica a sangre
+    items:
+      - { titulo: Láser de diodo de triple onda, texto: "Depilación eficaz y cómoda en todo tipo de pieles.", icono: rayo }
+      - { titulo: Luz pulsada intensa, texto: "Para manchas, rojeces y pequeñas venitas.", icono: sol }
+      - { titulo: Radiofrecuencia fraccionada, texto: "Estimula el colágeno y mejora la firmeza.", icono: gota }
+      - { titulo: Diagnóstico facial por imagen, texto: "Analizamos tu piel para elegir el mejor protocolo.", icono: ojo }
+
+  equipo:
+    activa: true
+    antetitulo: Equipo médico
+    titulo: Las personas que te atienden
+    texto: "Médicos colegiados y personal sanitario con formación continua en medicina estética."
+    personas:
+      - { nombre: Dra. Elena Marín, cargo: Directora médica, foto: /placeholders/persona.svg, texto: "Medicina estética facial y tratamientos inyectables." }
+      - { nombre: Dr. Pablo Quesada, cargo: Dermatología, foto: /placeholders/persona.svg, texto: "Manchas, acné y salud de la piel." }
+      - { nombre: Lucía Ortega, cargo: Enfermería estética, foto: /placeholders/persona.svg, texto: "Bioestimulación y seguimiento de pacientes." }
+      - { nombre: Sara Benítez, cargo: Láser y aparatología, foto: /placeholders/persona.svg, texto: "Depilación láser y tratamientos corporales." }
+
+  ofertas:
+    activa: true
+    antetitulo: Promociones
+    titulo: Propuestas de temporada
+    texto: "Bonos y precios especiales para empezar a cuidarte."
+    ofertas:
+      - { titulo: Primera valoración, texto: "Estudio de tu piel con diagnóstico por imagen y plan por escrito.", precio: "Sin coste", validez: Siempre }
+      - { titulo: Bono láser 6 sesiones, texto: "Depilación láser de diodo en la zona que elijas.", precio: "desde 199 €", validez: Válido 12 meses }
+      - { titulo: Ritual facial de otoño, texto: "Peeling suave e higiene facial médica para recuperar la luz tras el verano.", precio: "160 €", validez: Hasta el 30 de noviembre }
+    nota: "Promociones no acumulables. Todas incluyen valoración médica previa."
+    cta: { texto: Reservar una promoción, url: "/#cita" }
+
+  opiniones:
+    activa: true
+    antetitulo: Opiniones
+    titulo: Lo que dicen nuestras pacientes
+    testimonios:
+      - { texto: "Me explicaron todo con una calma que no había encontrado en otras clínicas. El resultado es tan natural que solo me dicen que se me ve descansada.", autor: "Marta · Marbella" }
+      - { texto: "Terminé el bono de láser y estoy encantada. Puntuales, limpísimos y muy cercanos.", autor: "Cristina · San Pedro Alcántara" }
+      - { texto: "Fui por unas manchas del sol y salí con un plan claro y por escrito. Cumplieron todo lo que me dijeron.", autor: "Laura · Estepona" }
+    nota: "Opiniones de pacientes de la clínica."
+
+  preguntas:
+    activa: true
+    antetitulo: Preguntas frecuentes
+    titulo: Lo que nos preguntáis antes de venir
+    texto: "Si tu duda no está aquí, escríbenos y te responde el equipo médico."
+    preguntas:
+      - { pregunta: "¿La primera consulta tiene coste?", respuesta: "No. La primera valoración es gratuita: estudiamos tu piel, hablamos de lo que te gustaría mejorar y te damos un plan por escrito, sin compromiso." }
+      - { pregunta: "¿Quién realiza los tratamientos?", respuesta: "Los tratamientos médicos los hacen médicos colegiados. La aparatología y los faciales, personal sanitario y esteticistas con formación específica." }
+      - { pregunta: "¿Duele la depilación láser?", respuesta: "Se nota un calor breve, como un pequeño pellizco. El equipo tiene un sistema de frío que la hace muy llevadera." }
+      - { pregunta: "¿Cuándo se ven los resultados del ácido hialurónico?", respuesta: "Desde el primer momento, aunque el resultado definitivo se aprecia a los quince días, cuando baja la posible inflamación. Incluimos una revisión." }
+      - { pregunta: "¿Puedo hacerme tratamientos en verano?", respuesta: "Muchos sí, como la depilación láser de diodo o la bioestimulación. Los peelings y el láser de manchas los dejamos para otoño e invierno." }
+
+  cita:
+    activa: true
+    antetitulo: Pedir cita
+    titulo: Tu primera valoración, sin compromiso
+    texto: "Cuéntanos qué te gustaría mejorar y te buscamos un hueco esta misma semana."
+    imagen: /fotos/cita.jpg   # foto a sangre con velo claro
+    items:
+      - { titulo: Escríbenos, texto: "Por WhatsApp o por teléfono. Dinos qué te preocupa." }
+      - { titulo: Valoración médica, texto: "Estudiamos tu piel y resolvemos tus dudas con calma." }
+      - { titulo: Tu plan por escrito, texto: "Con sesiones, tiempos y precio cerrado antes de empezar." }
+    cta: { texto: Pedir cita por WhatsApp, url: "" }   # url vacía = WhatsApp de contacto
+    enlace_reservas: ""             # url de una agenda externa (opcional); si existe, aparece su botón
+    enlace_reservas_texto: Reservar en la agenda online
+    nota: "Si no puedes venir, avísanos con 24 horas para dar tu hueco a otra paciente."
+
+  contacto:
+    activa: true
+    antetitulo: Contacto
+    titulo: Te esperamos en Marbella
+    texto: "A dos minutos de la Alameda, con aparcamiento público enfrente. Escríbenos y te respondemos en horario de clínica."
+    imagen: /placeholders/mapa.svg
+    boton: Enviar mensaje

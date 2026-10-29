@@ -1,0 +1,71 @@
+---
+// Portada a sangre: foto a todo el ancho (`imagen`, o la primera de `galeria`) con un velo claro que deja leer
+// el título en serif fina enorme; dos botones (`cta`, `cta_secundario`) y, abajo, una franja con los sellos de
+// `items` (solo `titulo`) separados por filetes de oro. Sin foto: banda perla con un aro de oro.
+import { seccion } from '../../data/site';
+import { altHero } from '../../lib/seo';
+import Imagen from '../ui/Imagen.astro';
+interface Props { id: string; primera?: boolean }
+const { id, primera = false } = Astro.props;
+const s = seccion(id);
+const foto = s ? s.imagen || s.galeria[0] || '' : '';
+const sellos = s ? s.items.filter((it) => it && it.titulo) : [];
+---
+
+{
+  s && (
+    <section id={id} class:list={['portada', { 'portada--sin-foto': !foto }]}>
+      {foto && <Imagen src={foto} alt={altHero()} ancho={1920} alto={1080} prioridad={primera} class="portada-foto" />}
+      <div class="portada-velo" aria-hidden="true" />
+      <div class="contenedor portada-cuerpo">
+        <div class="portada-texto">
+          {s.antetitulo && <p class="antetitulo">{s.antetitulo}</p>}
+          <h1 class="portada-titulo">{s.titulo}</h1>
+          {s.texto && <p class="portada-parrafo">{s.texto}</p>}
+          {(s.cta?.url || s.cta_secundario?.url) && (
+            <div class="mt-9 flex flex-wrap gap-3">
+              {s.cta?.url && <a class="btn" href={s.cta.url}>{s.cta.texto}</a>}
+              {s.cta_secundario?.url && <a class="btn-sec" href={s.cta_secundario.url}>{s.cta_secundario.texto}</a>}
+            </div>
+          )}
+        </div>
+      </div>
+      {sellos.length > 0 && (
+        <div class="portada-sellos">
+          <ul class="contenedor">
+            {sellos.map((it) => (
+              <li>
+                <span class="portada-rombo" aria-hidden="true" />
+                {it.titulo}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  )
+}
+
+<style>
+  .portada { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; min-height: calc(92svh - 4.5rem); background: var(--perla); }
+  .portada :global(.portada-foto) { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 68% center; }
+  .portada-velo { position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, var(--c-fondo) 0%, color-mix(in srgb, var(--c-fondo) 90%, transparent) 46%, color-mix(in srgb, var(--c-fondo) 30%, transparent) 78%, color-mix(in srgb, var(--c-fondo) 10%, transparent) 100%); }
+  .portada--sin-foto .portada-velo { background: radial-gradient(circle at 88% 18%, transparent 0 13rem, var(--linea-oro) 13rem calc(13rem + 1px), transparent calc(13rem + 1px)), radial-gradient(70rem 40rem at 100% 0%, var(--perla-honda), transparent 70%); }
+  .portada-cuerpo { flex: 1; display: flex; align-items: flex-end; padding-top: 11rem; padding-bottom: 3rem; }
+  .portada-texto { max-width: 46rem; }
+  .portada-titulo { margin-top: 1.4rem; font-size: clamp(2.75rem, 1.2rem + 6.4vw, 7.25rem); font-weight: 300; line-height: .98; letter-spacing: -.02em; max-width: 13ch; }
+  .portada-parrafo { margin-top: 1.6rem; max-width: 34rem; font-size: 1.12rem; opacity: .82; }
+  .portada-sellos { border-top: 1px solid var(--linea-oro); background: color-mix(in srgb, var(--c-fondo) 82%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .portada-sellos ul { display: grid; }
+  .portada-sellos li { display: flex; align-items: center; gap: .9rem; padding-block: 1rem; font-size: .72rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }
+  .portada-sellos li + li { border-top: 1px solid var(--linea); }
+  .portada-rombo { width: .5rem; height: .5rem; flex-shrink: 0; background: var(--c-primario); transform: rotate(45deg); }
+  @media (min-width: 768px) {
+    .portada { min-height: calc(90svh - 4.5rem); }
+    .portada-velo { background: linear-gradient(90deg, color-mix(in srgb, var(--c-fondo) 97%, transparent) 0%, color-mix(in srgb, var(--c-fondo) 86%, transparent) 34%, color-mix(in srgb, var(--c-fondo) 30%, transparent) 62%, transparent 82%); }
+    .portada-cuerpo { align-items: center; padding-block: 6rem; }
+    .portada-sellos ul { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+    .portada-sellos li { padding-block: 1.5rem; }
+    .portada-sellos li + li { border-top: 0; border-left: 1px solid var(--linea-oro); padding-left: 2rem; }
+  }
+</style>

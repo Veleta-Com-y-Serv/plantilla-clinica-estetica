@@ -1,0 +1,73 @@
+---
+// Tecnología: banda grafito. Arriba, la foto (`imagen`) en franja panorámica a sangre que se funde con la banda;
+// debajo, titular partido y los `items` (icono, titulo, texto) en 1 → 2 → 4 columnas separadas por filetes de oro,
+// cada uno con su número de orden. Sin items ni texto, la sección no se pinta.
+import { seccion } from '../../data/site';
+import { altSeccion } from '../../lib/seo';
+import Titular from '../ui/Titular.astro';
+import Imagen from '../ui/Imagen.astro';
+import Icono from '../ui/Icono.astro';
+interface Props { id: string }
+const s = seccion(Astro.props.id);
+const items = s ? s.items.filter((it) => it && it.titulo) : [];
+const num = (i: number) => String(i + 1).padStart(2, '0');
+---
+
+{
+  s && (items.length > 0 || s.texto || s.titulo) && (
+    <section id={Astro.props.id} class="banda--oscura tecno">
+      {s.imagen && (
+        <div class="tecno-franja">
+          <Imagen src={s.imagen} alt={altSeccion(s)} ancho={2100} alto={900} class="h-full w-full object-cover" />
+        </div>
+      )}
+      <div class:list={['contenedor tecno-cuerpo', { 'tecno-cuerpo--sin-foto': !s.imagen }]}>
+        <Titular alinear="partido" antetitulo={s.antetitulo} titulo={s.titulo} texto={s.texto} />
+        {items.length > 0 && (
+          <ul class="tecno-rejilla" style={`--cols:${Math.min(items.length, 4)}`}>
+            {items.map((it, i) => (
+              <li>
+                <p class="tecno-num">
+                  <span>{num(i)}</span>
+                  <Icono nombre={it.icono} tam={26} />
+                </p>
+                <h3 class="tecno-titulo">{it.titulo}</h3>
+                {it.texto && <p class="mt-3 text-[.97rem] opacity-75">{it.texto}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+        {s.cta?.url && <p class="mt-12"><a class="btn" href={s.cta.url}>{s.cta.texto}</a></p>}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .tecno-franja { position: relative; aspect-ratio: 16 / 9; max-height: 34rem; width: 100%; overflow: hidden; }
+  .tecno-franja::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, var(--grafito) 100%); }
+  .tecno-cuerpo { position: relative; padding-bottom: var(--ritmo); margin-top: -2rem; }
+  .tecno-cuerpo--sin-foto { margin-top: 0; padding-top: var(--ritmo); }
+  .tecno :global(.titulo-seccion) { color: var(--sobre-grafito); }
+  .tecno :global(.titular--partido .titular-texto) { border-left-color: color-mix(in srgb, var(--c-primario) 60%, transparent); }
+  .tecno-rejilla { display: grid; border-top: 1px solid color-mix(in srgb, var(--c-primario) 60%, transparent); }
+  .tecno-rejilla li { padding: 2rem 0; border-bottom: 1px solid color-mix(in srgb, var(--sobre-grafito) 14%, transparent); }
+  .tecno-num { display: flex; align-items: center; justify-content: space-between; color: var(--oro-claro); font-family: var(--fuente-titulos); font-size: 1.1rem; letter-spacing: .1em; }
+  .tecno-titulo { margin-top: 1.5rem; font-size: clamp(1.5rem, 1.25rem + .8vw, 1.9rem); line-height: 1.12; }
+  @media (min-width: 640px) {
+    .tecno-rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tecno-rejilla li { padding: 2.5rem 2rem 2.5rem 0; }
+    .tecno-rejilla li:nth-child(2n) { padding-left: 2rem; padding-right: 0; border-left: 1px solid color-mix(in srgb, var(--sobre-grafito) 14%, transparent); }
+  }
+  @media (min-width: 768px) {
+    .tecno-franja { aspect-ratio: 21 / 9; }
+    .tecno-cuerpo { padding-bottom: var(--ritmo-md); margin-top: -5rem; }
+    .tecno-cuerpo--sin-foto { margin-top: 0; padding-top: var(--ritmo-md); }
+  }
+  @media (min-width: 1100px) {
+    .tecno-rejilla { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); border-bottom: 1px solid color-mix(in srgb, var(--sobre-grafito) 14%, transparent); }
+    .tecno-rejilla li, .tecno-rejilla li:nth-child(2n) { padding: 2.5rem 2rem 3rem; border-bottom: 0; border-left: 1px solid color-mix(in srgb, var(--sobre-grafito) 14%, transparent); }
+    .tecno-rejilla li:first-child { border-left: 0; padding-left: 0; }
+    .tecno-rejilla li:nth-child(4n+1) { border-left: 0; padding-left: 0; }
+  }
+</style>
