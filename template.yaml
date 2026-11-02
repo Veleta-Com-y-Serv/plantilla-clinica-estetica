@@ -21,11 +21,15 @@ secciones:
   - { id: contacto, nombre: Contacto }
 estilo: lujoso
 plan_minimo: presencia
-version: 1.0.0
+version: 1.1.0
 base: astrowind
 demo_url: https://demo-plantilla-clinica-estetica.noexpertise.com
 activa: true
 orden: 280
+
+# Páginas propias (docs/plantillas.md § Fichas por elemento y páginas por zona). Espejo en src/data/fichas.ts.
+fichas:
+  - { lista: tratamientos, campo: tratamientos, ruta: tratamientos, nombre: Tratamiento, tipo: Service }
 
 # Asistente de puesta en marcha (NoExpertise): un paso por pantalla. Rutas del site sin índices;
 # tipos: texto y lista (la IA propone), datos, fotos, eleccion (colores y logo) y repaso.

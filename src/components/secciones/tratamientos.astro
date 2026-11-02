@@ -2,12 +2,14 @@
 // Tratamientos: rejilla a todo el ancho (1 → 2 → 3 → 4 columnas) sin tarjetas: foto vertical con marco fino,
 // categoría en oro, nombre en serif, texto y, sobre un filete, duración y precio (si están vacíos no se pintan).
 // Con más de una `categoria`, botones de filtro (un poco de JavaScript en línea; sin él se ven todos).
+// Los tratamientos con `detalle` tienen página propia (/tratamientos/<slug>/): su nombre es un enlace.
 // Campos: `tratamientos[]` (nombre, texto, precio, duracion, categoria, imagen), `nota`, `cta`.
 import { seccion, valor, slug } from '../../data/site';
 import { altFicha } from '../../lib/seo';
 import Titular from '../ui/Titular.astro';
 import Imagen from '../ui/Imagen.astro';
 import Icono from '../ui/Icono.astro';
+import { enlaceDe } from '../../lib/paginas';
 interface Props { id: string }
 const { id } = Astro.props;
 const s = seccion(id);
@@ -36,14 +38,14 @@ const nota = valor(s?.nota);
               const duracion = valor(t.duracion);
               const categoria = valor(t.categoria);
               return (
-                <li class="trat" data-cat={categoria ? slug(categoria) : ''}>
+                <li class:list={['trat', { 'trat--enlace': !!enlaceDe(t) }]} data-cat={categoria ? slug(categoria) : ''}>
                   {t.imagen && (
                     <div class="trat-foto marco">
                       <Imagen src={t.imagen} alt={altFicha(t)} ancho={900} alto={1200} class="h-full w-full object-cover" />
                     </div>
                   )}
                   {categoria && <p class="trat-cat">{categoria}</p>}
-                  <h3 class="trat-nombre">{t.nombre}</h3>
+                  <h3 class="trat-nombre">{enlaceDe(t) ? <a href={enlaceDe(t)} class="trat-enlace">{t.nombre}</a> : t.nombre}</h3>
                   {t.texto && <p class="trat-texto">{t.texto}</p>}
                   {(duracion || precio) && (
                     <p class="trat-pie">
@@ -58,6 +60,7 @@ const nota = valor(s?.nota);
                       {precio && <span class="trat-precio">{precio}</span>}
                     </p>
                   )}
+                  {enlaceDe(t) && <span class="trat-ver" aria-hidden="true">Ver más <Icono nombre="flecha" tam={16} /></span>}
                 </li>
               );
             })}
@@ -98,6 +101,13 @@ const nota = valor(s?.nota);
   .trat-rejilla { display: grid; gap: 3.5rem 2rem; }
   .trat { display: flex; flex-direction: column; min-width: 0; }
   .trat[hidden] { display: none; }
+  .trat--enlace { position: relative; }
+  .trat-enlace { color: inherit; text-decoration: none; }
+  .trat-enlace::after { content: ""; position: absolute; inset: 0; }
+  .trat-enlace:focus-visible { outline: none; }
+  .trat--enlace:has(.trat-enlace:focus-visible) { outline: 2px solid var(--c-primario); outline-offset: 6px; }
+  .trat-ver { display: inline-flex; align-items: center; gap: .4rem; margin-top: 1rem; color: var(--oro-texto); font-size: .68rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; }
+  .trat--enlace:hover .trat-ver { text-decoration: underline; }
   .trat-foto { aspect-ratio: 4 / 3; background: var(--perla); margin-bottom: 1.5rem; }
   .trat-foto :global(img) { transition: transform .8s ease; }
   .trat:hover .trat-foto :global(img) { transform: scale(1.04); }

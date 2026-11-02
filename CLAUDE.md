@@ -56,3 +56,14 @@ Antes de dar una orden por buena: `npm run build` sin errores.
 - `cita.items`: pasos (numerales romanos). `cita.cta`: botón principal (si su `url` está vacía abre WhatsApp con `contacto.whatsapp`). `cita.enlace_reservas`: agenda externa opcional (con `enlace_reservas_texto`). `cita.imagen`: foto a sangre con velo (decorativa). `cita.nota`.
 - `equipo.personas[]`: sin personas, la sección no se pinta.
 - `contacto.imagen`: plano que enlaza a mapas. `contacto.boton`: texto del botón del formulario.
+
+## Páginas propias (fichas por elemento)
+- Listas con página propia (espejo de `fichas:` de template.yaml en `src/data/fichas.ts`): `secciones.tratamientos.tratamientos` → `/tratamientos/<slug>/` (tratamiento).
+  **Solo los elementos con `detalle`** (texto largo, párrafos separados por una línea en blanco, ≤ 3000 caracteres, sin HTML) tienen página;
+  los demás siguen como hasta ahora. Campos opcionales del elemento: `slug` (si falta, sale del nombre; no lo pongas sin motivo)
+  e `imagenes` («/fotos/a.jpg; /fotos/b.jpg», galería de la ficha; la foto principal es `imagen` o, si no hay, la primera de `imagenes`).
+  El resto de campos (precio, duración…) salen en la tabla de datos de la ficha.
+- Una orden «añade una página para X» = escribir su `detalle` en site.yaml. Nunca crees a mano páginas en
+  `src/pages/tratamientos/`: salen solas de `src/pages/[coleccion]/[slug].astro`.
+- No tocar `src/lib/paginas.ts`, `src/lib/slug.ts` ni `src/lib/seo.ts` (comunes a todas las plantillas). Las páginas propias entran solas en
+  `sitemap.xml` y `llms.txt`, con su JSON-LD (migas y servicio/producto con precio si lo hay).

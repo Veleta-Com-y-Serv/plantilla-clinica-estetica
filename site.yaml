@@ -55,12 +55,57 @@ secciones:
     titulo: Cada piel pide su propio protocolo
     texto: "Elige por categoría. Antes de cualquier tratamiento te hacemos una valoración médica y te explicamos qué esperar."
     tratamientos:   # se filtran por `categoria` (en el orden en que aparece cada una)
-      - { nombre: Higiene facial médica, categoria: Facial, duracion: 60 min, precio: "85 €", imagen: /fotos/tratamiento-higiene.jpg, texto: "Limpieza profunda, extracción y mascarilla según tu tipo de piel." }
-      - { nombre: Peeling químico, categoria: Facial, duracion: 45 min, precio: "desde 120 €", imagen: /fotos/tratamiento-peeling.jpg, texto: "Renueva la textura y unifica el tono. Pauta de cuidados en casa incluida." }
-      - { nombre: Ácido hialurónico, categoria: Medicina estética, duracion: 30 min, precio: "desde 290 €", imagen: /fotos/tratamiento-hialuronico.jpg, texto: "Hidratación y volumen en labios, ojeras o surcos, siempre con resultado natural." }
+      - nombre: Higiene facial médica
+        categoria: Facial
+        duracion: 60 min
+        precio: "85 €"
+        imagen: /fotos/tratamiento-higiene.jpg
+        texto: "Limpieza profunda, extracción y mascarilla según tu tipo de piel."
+        detalle: |
+          La higiene facial médica es el punto de partida de casi cualquier plan de cuidado de la piel. Se hace en cabina privada y siempre la dirige una profesional sanitaria, que empieza observando tu piel con buena luz y preguntándote por tu rutina, tus productos y lo que te preocupa.
+
+          Después se limpia en profundidad, se prepara la piel con vapor suave, se extraen con cuidado los comedones y las impurezas y se aplica una mascarilla elegida según tu tipo de piel: calmante si hay rojeces, hidratante si está tirante, matificante si tiende a brillar. Para terminar se protege con un filtro solar adecuado.
+
+          Es un tratamiento pensado para quien quiere una piel más limpia y luminosa, para preparar la piel antes de otros tratamientos y para mantener los resultados de un peeling o de la bioestimulación. Puedes volver a tu rutina el mismo día; es normal que haya un leve enrojecimiento que se va en pocas horas. Al terminar te dejamos por escrito unas pautas de cuidado en casa y, si lo necesitas, te sugerimos cada cuánto repetirlo.
+      - nombre: Peeling químico
+        categoria: Facial
+        duracion: 45 min
+        precio: "desde 120 €"
+        imagen: /fotos/tratamiento-peeling.jpg
+        texto: "Renueva la textura y unifica el tono. Pauta de cuidados en casa incluida."
+        detalle: |
+          El peeling químico renueva la capa superficial de la piel para que salga una más uniforme, suave y luminosa. Se utiliza para mejorar la textura, atenuar manchas leves, afinar poros y devolver luz a una piel apagada. Antes de aplicarlo, el equipo médico revisa tu piel, tus antecedentes y la época del año, porque no todos los ácidos ni todas las concentraciones sirven para todo el mundo.
+
+          En cabina se limpia la piel, se aplica el producto elegido durante el tiempo justo y se neutraliza y calma con una mascarilla. Es normal notar un calor pasajero. En los días siguientes la piel puede tirar y descamarse con suavidad, algo que forma parte del proceso y que se acompaña con hidratación y protección solar estricta.
+
+          Según el objetivo, el médico te propone un peeling único o una serie espaciada en el tiempo. Te entregamos una pauta de cuidados en casa por escrito, con lo que sí y lo que no debes usar mientras la piel se renueva, y te citamos para revisar el resultado.
+      - nombre: Ácido hialurónico
+        categoria: Medicina estética
+        duracion: 30 min
+        precio: "desde 290 €"
+        imagen: /fotos/tratamiento-hialuronico.jpg
+        texto: "Hidratación y volumen en labios, ojeras o surcos, siempre con resultado natural."
+        detalle: |
+          El ácido hialurónico es una sustancia que el propio cuerpo produce y que mantiene la piel hidratada y con volumen. Con los años su cantidad baja, y se notan los surcos, las ojeras hundidas o los labios más finos. Infiltrado por un médico, ayuda a recuperar hidratación y a reponer volumen donde se ha perdido, buscando siempre un resultado que se vea natural y que respete tus rasgos.
+
+          La primera visita es una valoración sin prisas: miramos tu rostro en conjunto, hablamos de lo que te gustaría cambiar y también de lo que no hace falta tocar. Si decides seguir adelante, se aplica anestesia tópica, se infiltra con cánulas o agujas muy finas y se modela la zona con las manos. Cada paciente tiene su producto y su técnica.
+
+          Después puede aparecer algo de hinchazón o pequeñas marcas durante unos días; se disimulan con maquillaje y desaparecen solas. El resultado se asienta de forma progresiva. Te citamos para una revisión y, si hace falta, un retoque, y te explicamos con claridad cuánto suele durar el efecto en tu caso.
+      - { nombre: Arrugas de expresión, categoria: Medicina estética, duracion: 20 min, precio: "desde 250 €", imagen: /fotos/tratamiento-toxina.jpg, texto: "Suaviza frente, entrecejo y patas de gallo sin perder la expresión." }
       - { nombre: Arrugas de expresión, categoria: Medicina estética, duracion: 20 min, precio: "desde 250 €", imagen: /fotos/tratamiento-toxina.jpg, texto: "Suaviza frente, entrecejo y patas de gallo sin perder la expresión." }
       - { nombre: Bioestimulación facial, categoria: Medicina estética, duracion: 40 min, precio: "180 €", imagen: /fotos/tratamiento-mesoterapia.jpg, texto: "Vitaminas y activos que devuelven luz y firmeza a la piel cansada." }
-      - { nombre: Depilación láser de diodo, categoria: Láser, duracion: Según zona, precio: "desde 39 €", imagen: /fotos/tratamiento-laser.jpg, texto: "Apta para casi todos los tonos de piel y también en verano." }
+      - nombre: Depilación láser de diodo
+        categoria: Láser
+        duracion: Según zona
+        precio: "desde 39 €"
+        imagen: /fotos/tratamiento-laser.jpg
+        texto: "Apta para casi todos los tonos de piel y también en verano."
+        detalle: |
+          La depilación láser de diodo reduce el vello de forma progresiva y duradera. El láser actúa sobre el pigmento del folículo y lo debilita sin dañar la piel que lo rodea. Es un tratamiento médico: antes de empezar valoramos tu tipo de piel, tu tipo de vello, tus antecedentes y la medicación que tomas, y hacemos una prueba en una zona pequeña para ajustar la energía.
+
+          En cada sesión se recorta el vello, se aplica el láser por la zona acordada y se calma la piel con frío y una crema. Se nota un calor ligero, y el equipo incorpora refrigeración para que sea llevadero. La duración depende de la zona: unas partes se tratan en pocos minutos y otras piden algo más.
+
+          Como el vello crece por fases, hacen falta varias sesiones espaciadas según la zona y el ritmo de cada persona. Entre sesión y sesión conviene evitar el sol directo y la cera, y usar protección solar. Es apta para casi todos los tonos de piel y también se puede hacer en verano, siempre con las precauciones que te indicamos por escrito.
       - { nombre: Láser para manchas, categoria: Láser, duracion: 30 min, precio: "desde 150 €", imagen: /fotos/tratamiento-manchas.jpg, texto: "Atenúa manchas solares y de la edad en cara, escote y manos." }
       - { nombre: Radiofrecuencia corporal, categoria: Corporal, duracion: 50 min, precio: "90 €", imagen: /fotos/tratamiento-corporal.jpg, texto: "Reafirma abdomen, brazos y piernas. Sin agujas y sin tiempo de recuperación." }
     nota: "Precios orientativos con IVA. El precio final depende de la valoración médica."

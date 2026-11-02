@@ -67,3 +67,11 @@ y rediseñada entera. Este fichero se queda en el repo: es lo que lee quien (per
 - [x] `template.yaml` con sectores con nombre y guion del asistente de 11 pasos; `fotos.json` con 12 fotos.
 - [x] `README.md`, `CLAUDE.md`, placeholders y `favicon.svg` propios.
 - [ ] Fotos generadas y previews definitivas (paso de fotos), repo y etiqueta `v1.0.0`, alta en la plataforma.
+
+## Páginas propias (fichas)
+Con la misma piel que la portada: cabecera y pie de la plantilla, migas (Inicio › Sección › Elemento), hero con la foto del
+elemento (sin foto, su icono), `detalle` en párrafos, tabla de datos, caja de contacto, galería (`imagenes`) y otros elementos
+de la misma lista.
+Diseño de las fichas: banda perla con migas en oro y hero partido (título serif fino, filete de oro sobre duración y
+precio, foto con marco interior); banda clara con el primer párrafo en cursiva serif, datos con filetes y caja de cita
+en grafito; galería en banda perla y «Otros tratamientos» en rejilla sin tarjetas, separada por filetes.
