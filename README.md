@@ -7,6 +7,7 @@ Web lujosa en blanco, oro y perla para clínicas estéticas, láser y dermatolog
 - Campos propios: `tratamientos[]` (nombre, texto, precio, duracion, categoria, imagen; filtro por `categoria`), `sobre.declaracion`, `ofertas[]` (titulo, texto, precio, validez), `cita.enlace_reservas`.
 - A todo el ancho: bandas claras, perla, grafito y oro de borde a borde; portada y pedir cita con foto a sangre y velo claro; «La clínica» y contacto partidos 50/50 a sangre. Responsive de 375 a 1440 px sin scroll horizontal.
 - SEO de base incluido (`src/lib/seo.ts`): canónica, og:image, JSON-LD del negocio (`MedicalClinic` por defecto) y de las preguntas frecuentes, `robots.txt`, `sitemap.xml` y `llms.txt`; `noindex` si `seo.indexable: false`.
+- Varias páginas (opcional, `paginas:` en la raíz de `site.yaml`): Inicio + una página por entrada (`{ ruta, titulo, secciones: "a; b" }`, hasta 6) con el menú hecho solo; reparto recomendado en `template.yaml → paginas`. Sin la clave, una sola página larga.
 - Contenido editable en `site.yaml`; metadatos en `template.yaml`; reglas para el agente en `CLAUDE.md`; diseño en `DISEÑO.md`; fotos de la demo en `fotos.json`.
 
 ```
